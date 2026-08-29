@@ -1,0 +1,23 @@
+# AWS / credentials
+.aws/
+*.pem
+*.key
+credentials
+config
+
+# Secrets
+.env
+.env.*
+*.secret
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editors
+.vscode/
+.idea/
+
+# Temporary files
+*.tmp
+*.log

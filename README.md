@@ -83,17 +83,17 @@ No inbound SSH access is required.
 ## Network Design
 
 VPC:
-
+```text
 10.0.0.0/16
-
+```
 Public subnet:
-
+```text
 10.0.1.0/24
-
+```
 Private subnet:
-
+```text
 10.0.2.0/24
-
+```
 The EC2 instance is placed in the private subnet.
 
 The private subnet uses the NAT Gateway for outbound connectivity where
@@ -104,15 +104,15 @@ required.
 ## Management Model
 
 Traditional:
-
+```text
 Administrator
      |
      | SSH / TCP 22
      v
 EC2
-
+```
 This project:
-
+```text
 Administrator
      |
      v
@@ -123,7 +123,7 @@ SSM Agent
      |
      v
 Private EC2
-
+```
 ---
 
 ## Security Objective

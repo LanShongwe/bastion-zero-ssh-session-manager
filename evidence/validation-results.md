@@ -49,3 +49,48 @@ Status: PASS
 ### Result
 
 The network foundation is ready for EC2 deployment.
+
+---
+
+## Objective
+
+Create an EC2 security group that does not permit inbound SSH.
+
+### Result
+
+```PASS```
+
+### Configuration
+
+```
+Security Group:
+zero-ssh-target-sg
+
+Inbound:
+None
+
+Outbound:
+All traffic → 0.0.0.0/0
+```
+### Security validation
+```
+TCP/22 is not permitted inbound.
+
+The security group intentionally contains no inbound rules.
+```
+### Expected architecture
+```
+            Internet
+            │
+            X TCP/22
+            │
+            EC2 private instance
+
+            Management will later occur through:
+
+            EC2
+            │
+            │ outbound HTTPS
+            ▼
+            AWS Systems Manager
+```

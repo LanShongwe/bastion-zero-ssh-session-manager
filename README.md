@@ -25,6 +25,7 @@ Traditional EC2 administration commonly relies on SSH.
 
 A typical architecture may expose:
 
+```text
 Internet
    |
    v
@@ -33,12 +34,14 @@ Security Group
 TCP/22
    |
 EC2
+```
 
 Although SSH can be secured, exposing an administrative port creates
 additional network attack surface.
 
 This project explores an alternative:
 
+``` text
 Internet
    |
 AWS Systems Manager
@@ -46,6 +49,7 @@ AWS Systems Manager
 SSM Agent
    |
 Private EC2
+```
 
 No inbound SSH access is required.
 

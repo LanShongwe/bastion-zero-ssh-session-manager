@@ -1,96 +1,82 @@
 # Validation Results
 
-## Phase 1 — Network Foundation
+## Objective
 
-### VPC
-```
-Status: PASS
-
-CIDR:
-
-10.0.0.0/16
-```
-### Public Subnet
-```
-Status: PASS
-
-CIDR:
-
-10.0.1.0/24
-```
-### Private Subnet
-```
-Status: PASS
-
-CIDR:
-
-10.0.2.0/24
-```
-### Internet Gateway
-```
-Status: PASS
-
-Attached to:
-
-bastion-zero-ssh-vpc
-```
-### Public Routing
-```
-Status: PASS
-
-0.0.0.0/0 → Internet Gateway
-```
-### Private Routing
-```
-Status: PASS
-
-0.0.0.0/0 → NAT Gateway
-```
-### Result
-
-The network foundation is ready for EC2 deployment.
+Confirm that the EC2 instance can be administered through AWS Systems Manager
+without requiring inbound SSH access.
 
 ---
 
-## Objective
+## Test 1 — EC2 Instance
 
-Create an EC2 security group that does not permit inbound SSH.
+Expected:
 
-### Result
+- Instance running
+- Correct VPC
+- Correct subnet
+- Correct security group
 
-```PASS```
+Result:
 
-### Configuration
+PASS
 
-```
-Security Group:
-zero-ssh-target-sg
+Evidence:
 
-Inbound:
-None
+screenshots/08-validation/01-instance-running.png
 
-Outbound:
-All traffic → 0.0.0.0/0
-```
-### Security validation
-```
-TCP/22 is not permitted inbound.
+---
 
-The security group intentionally contains no inbound rules.
-```
-### Expected architecture
-```
-            Internet
-            │
-            X TCP/22
-            │
-            EC2 private instance
+## Test 2 — Systems Manager
 
-            Management will later occur through:
+Expected:
 
-            EC2
-            │
-            │ outbound HTTPS
-            ▼
-            AWS Systems Manager
-```
+EC2 instance appears as a managed node.
+
+Result:
+
+PASS
+
+Evidence:
+
+screenshots/08-validation/02-ssm-managed.png
+
+---
+
+## Test 3 — Session Manager
+
+Expected:
+
+Administrator can establish a shell session.
+
+Result:
+
+PASS
+
+Evidence:
+
+screenshots/08-validation/03-session-connected.png
+
+---
+
+## Test 4 — SSH
+
+Expected:
+
+No inbound SSH management path.
+
+Result:
+
+PASS
+
+Evidence:
+
+screenshots/08-validation/05-no-inbound-ssh.png
+
+---
+
+## Overall Result
+
+The environment successfully met the primary project objective:
+
+EC2 administration was achieved using AWS Systems Manager Session Manager
+without requiring inbound SSH access.

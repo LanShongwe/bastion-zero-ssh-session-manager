@@ -1,63 +1,84 @@
-# 01 — Project Overview
+# Project Overview
 
 ## Project
 
-Bastion Hosts → Zero SSH with AWS Systems Manager Session Manager
+Bastion Hosts - Zero SSH with AWS Systems Manager Session Manager
 
 ## Objective
 
-Build a private AWS EC2 environment that can be securely administered
-without exposing inbound SSH (TCP/22) to the internet.
+Build and validate an AWS environment where an EC2 Linux server can be
+administrated without requiring inbound SSH access.
+
+The project uses AWS Systems Manager Session Manager as the primary
+management mechanism.
 
 ## Problem
 
-Traditional EC2 administration commonly uses:
+Traditional EC2 administration often uses SSH:
 
-Engineer → SSH →  Bastion Host  →  SSH  →  Private EC2
+```bash
+ Engineer
+   |
+   | TCP/22
+   v
+  EC2
+```
+This requires SSH to be reachable and creates an additional administrative
+network exposure.
 
-This introduces additional infrastructure and an additional attack surface.
+The target design removes this requirement:
 
-## Target
+Engineer
+   |
+   v
+AWS Systems Manager
+   |
+   v
+SSM Agent
+   |
+   v
+Private EC2
 
-Engineer → AWS Systems Manager Session Manager →  Private EC2
+## What was built
 
-The EC2 instance should:
-
-- have no public IP
-- have no inbound SSH rule
-- not require an SSH private key for administration
-- be reachable through Systems Manager
-- remain operational after SSH is completely removed
-
-## AWS Services
-
-- Amazon VPC
-- Amazon EC2
-- AWS Systems Manager
-- AWS Identity and Access Management (IAM)
-- Security Groups
+- Custom VPC
+- Public subnet
+- Private subnet
 - Internet Gateway
 - NAT Gateway
-- CloudWatch / Systems Manager logging where applicable
+- Public and private route tables
+- Security group
+- IAM role for Systems Manager
+- Amazon Linux EC2 instance
+- Systems Manager Session Manager access
 
-## Success Criteria
+## Security objective
 
-The project is successful when:
+The EC2 instance does not require an inbound TCP/22 rule for normal
+administration.
 
-1. A VPC is created.
-2. EC2 is deployed into a private subnet.
-3. The instance has no public IP.
-4. Security Group does not allow inbound TCP/22.
-5. EC2 is registered with Systems Manager.
-6. Session Manager successfully opens a shell.
-7. SSH access is unavailable.
-8. Systems Manager remains available.
-9. Network and IAM dependencies are documented.
-10. Failure scenarios are intentionally tested.
+## Result
 
-## Engineering Principle
+The environment was successfully built and tested.
 
-Do not simply make the system work.
+The EC2 instance can be accessed through Session Manager without using
+inbound SSH.
 
-Build it, verify it, break it, troubleshoot it,
-and document why it works.
+## Key AWS concepts
+
+- VPC
+- CIDR addressing
+- Subnets
+- Route tables
+- Internet Gateway
+- NAT Gateway
+- Security Groups
+- IAM
+- EC2
+- Systems Manager
+- Session Manager
+
+## Project type
+
+Hands-on AWS infrastructure and DevOps learning project focused on
+networking, security, Linux administration, and operational access.

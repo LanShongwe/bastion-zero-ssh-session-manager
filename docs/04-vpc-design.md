@@ -1,34 +1,81 @@
-# 04 — VPC Design
+# VPC Design
 
-## CIDR
+## VPC
 
+Name:
+
+```text
+bastion-zero-ssh-vpc
+```
+
+CIDR:
+```text
 10.0.0.0/16
+```
+The /16 network provides a private address space for the project.
 
-## Purpose
+## Subnet design
 
-The VPC provides the isolated network boundary for the project.
+### Public subnet
 
-## Network Design
+Name:
+```text
+bastion-zero-ssh-public-1
+```
+CIDR:
+```text
+10.0.1.0/24
+```
+Purpose:
 
-| Component | CIDR | Purpose |
-|---|---|---|
-| VPC | 10.0.0.0/16 | Network boundary |
-| Public subnet | 10.0.1.0/24 | NAT Gateway |
-| Private subnet | 10.0.2.0/24 | EC2 workload |
+- Public network infrastructure
+- NAT Gateway
 
-## Design Decision
+### Private subnet
 
-The EC2 workload is placed in a private subnet.
+Name:
+```text
+bastion-zero-ssh-private-1
+```
+CIDR:
+```text
+10.0.2.0/24
+```
+Purpose:
 
-The project intentionally avoids assigning a public IP to
-the workload instance.
+- EC2 workload
+- No direct public exposure
 
-## Security Objective
+## Network layout
 
-The EC2 instance should not require inbound SSH from the internet.
+```text
+VPC
+10.0.0.0/16
+│
+├── Public subnet
+│   10.0.1.0/24
+│   │
+│   └── NAT Gateway
+│
+└── Private subnet
+    10.0.2.0/24
+    │
+    └── EC2
+```
+### Route design
 
-## Evidence
+Public subnet:
+```text
+    0.0.0.0/0
+        |
+        v
+Internet Gateway
+```
 
-See:
-
-screenshots/01-vpc/01-vpc-overview.png
+Private subnet:
+```text
+    0.0.0.0/0
+        |
+        v
+    NAT Gateway
+```
